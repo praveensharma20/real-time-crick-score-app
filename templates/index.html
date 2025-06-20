@@ -1,85 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cricket Scores</title>
+    <title>CricketScore Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .top-bar {
-            background-color: rgb(25, 105, 94);
-            color: #e7f1f4;
-            padding: 8px;
-            font-size: 24px;
-            font-family: Arial, sans-serif;
-        }
         body {
             background-color: #030f13;
-            color: #ece0e0;
+            color: #e0e0e0;
         }
-        .custom-card {
-            width: 500px;
-            height: 150px;
+        .top-bar {
+            background-color: rgb(25, 105, 94);
+            padding: 10px 20px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+        .section-title {
+            font-size: 28px;
+            margin-top: 30px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .card {
+            background-color: #12232e;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .match-info {
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        a.card-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        a.card-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="top-bar">
-        <div class="container">
-            <img src="https://storage.googleapis.com/bkt-static-tt/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
-            CricketScore Pro : Praveen Sharma
-        </div>
+        <img src="https://storage.googleapis.com/bkt-static-tt/logo.png" width="40" height="40" alt="Logo">
+        CricketScore Pro : Praveen Sharma
     </div>
 
     <div class="container mt-4">
-
-        <h2>Live Matches</h2>
+        <!-- Live Matches -->
+        <div class="section-title">Live Matches</div>
         <div class="row row-cols-1 row-cols-md-2">
             {% for match in live_matches %}
-                <div class="col mb-4">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <p><strong>Description:</strong> {{ match['Description'] }}</p>
-                            <p><strong>Teams:</strong> {{ match['Teams'] }}</p>
-                            <p><strong>Status:</strong> {{ match['Status'] }}</p>
+                <div class="col">
+                    <a href="/match/{{ match['matchId'] }}" class="card-link">
+                        <div class="card p-3">
+                            <div class="card-title">{{ match['seriesName'] }}</div>
+                            <div class="match-info">
+                                <strong>{{ match['matchDesc'] }}</strong><br>
+                                {{ match['team1'] }} vs {{ match['team2'] }}<br>
+                                {{ match['status'] }}
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
-            {% else %}
-                <p>No live matches available.</p>
             {% endfor %}
         </div>
 
-        <h2>Recent Matches</h2>
+        <!-- Recent Matches -->
+        <div class="section-title">Recent Matches</div>
         <div class="row row-cols-1 row-cols-md-2">
-            {% for score in cricket_scores %}
-                <div class="col mb-4">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <p><strong>Description:</strong> {{ score['Description'] }}</p>
-                            <p><strong>Teams:</strong> {{ score['Teams'] }}</p>
-                            <p><strong>Status:</strong> {{ score['Status'] }}</p>
+            {% for match in cricket_scores %}
+                <div class="col">
+                    <div class="card p-3">
+                        <div class="card-title">{{ match['seriesName'] }}</div>
+                        <div class="match-info">
+                            <strong>{{ match['matchDesc'] }}</strong><br>
+                            {{ match['team1'] }} vs {{ match['team2'] }}<br>
+                            {{ match['status'] }}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
 
-        <h2>Upcoming Matches</h2>
+        <!-- Upcoming Matches -->
+        <div class="section-title">Upcoming Matches</div>
         <div class="row row-cols-1 row-cols-md-2">
             {% for match in upcoming_matches %}
-                <div class="col mb-4">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <p><strong>Description:</strong> {{ match['Description'] }}</p>
-                            <p><strong>Teams:</strong> {{ match['Teams'] }}</p>
-                            <p><strong>Status:</strong> {{ match['Status'] }}</p>
+                <div class="col">
+                    <div class="card p-3">
+                        <div class="card-title">{{ match['seriesName'] }}</div>
+                        <div class="match-info">
+                            <strong>{{ match['matchDesc'] }}</strong><br>
+                            {{ match['team1'] }} vs {{ match['team2'] }}<br>
+                            {{ match['matchTime'] }}
                         </div>
                     </div>
                 </div>
-            {% else %}
-                <p>No upcoming matches found.</p>
             {% endfor %}
         </div>
-
     </div>
 </body>
 </html>

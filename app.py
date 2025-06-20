@@ -22,14 +22,12 @@ def fetch_cricket_scores():
                 wrapper = series.get("seriesAdWrapper", {})
                 for match in wrapper.get("matches", []):
                     match_info = match.get("matchInfo", {})
-                    team1 = match_info.get("team1", {}).get("teamName", "")
-                    team2 = match_info.get("team2", {}).get("teamName", "")
-                    desc = match_info.get("matchDesc", "")
-                    status = match_info.get("status", "")
                     match_data = {
-                        'Description': desc,
-                        'Teams': f"{team1} vs {team2}",
-                        'Status': status
+                        'seriesName': match_info.get("seriesName", ""),
+                        'matchDesc': match_info.get("matchDesc", ""),
+                        'team1': match_info.get("team1", {}).get("teamName", ""),
+                        'team2': match_info.get("team2", {}).get("teamName", ""),
+                        'status': match_info.get("status", "")
                     }
                     matches_data.append(match_data)
     return matches_data
@@ -47,14 +45,13 @@ def fetch_upcoming_matches():
                 wrapper = series.get("seriesAdWrapper", {})
                 for match in wrapper.get("matches", []):
                     match_info = match.get("matchInfo", {})
-                    team1 = match_info.get("team1", {}).get("teamName", "")
-                    team2 = match_info.get("team2", {}).get("teamName", "")
-                    desc = match_info.get("matchDesc", "")
-                    status = match_info.get("status", "")
                     match_data = {
-                        'Description': desc,
-                        'Teams': f"{team1} vs {team2}",
-                        'Status': status
+                        'seriesName': match_info.get("seriesName", ""),
+                        'matchDesc': match_info.get("matchDesc", ""),
+                        'team1': match_info.get("team1", {}).get("teamName", ""),
+                        'team2': match_info.get("team2", {}).get("teamName", ""),
+                        'status': match_info.get("status", ""),
+                        'matchTime': match_info.get("startDate", "")
                     }
                     upcoming_matches.append(match_data)
     return upcoming_matches
@@ -72,14 +69,13 @@ def fetch_live_matches():
                 wrapper = series.get("seriesAdWrapper", {})
                 for match in wrapper.get("matches", []):
                     match_info = match.get("matchInfo", {})
-                    team1 = match_info.get("team1", {}).get("teamName", "")
-                    team2 = match_info.get("team2", {}).get("teamName", "")
-                    desc = match_info.get("matchDesc", "")
-                    status = match_info.get("status", "")
                     match_data = {
-                        'Description': desc,
-                        'Teams': f"{team1} vs {team2}",
-                        'Status': status
+                        'seriesName': match_info.get("seriesName", ""),
+                        'matchDesc': match_info.get("matchDesc", ""),
+                        'team1': match_info.get("team1", {}).get("teamName", ""),
+                        'team2': match_info.get("team2", {}).get("teamName", ""),
+                        'status': match_info.get("status", ""),
+                        'matchId': match_info.get("matchId", "")
                     }
                     live_matches.append(match_data)
     return live_matches
@@ -90,6 +86,17 @@ def index():
     upcoming_matches = fetch_upcoming_matches()
     live_matches = fetch_live_matches()
     return render_template('index.html', cricket_scores=cricket_scores, upcoming_matches=upcoming_matches, live_matches=live_matches)
+
+@app.route('/match/<match_id>')
+def match_detail(match_id):
+    score_url = f"https://cricbuzz-cricket.p.rapidapi.com/mcenter/v1/{match_id}/hscard"
+    response = requests.get(score_url, headers=headers)
+
+    if response.status_code == 200:
+        score_data = response.json()
+        return render_template('match_detail.html', score_data=score_data)
+    else:
+        return f"<h2>Unable to fetch data for Match ID: {match_id}</h2>"
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
