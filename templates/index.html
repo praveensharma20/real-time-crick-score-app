@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cricket Scores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .top-bar {
+            background-color: rgb(25, 105, 94);
+            color: #e7f1f4;
+            padding: 8px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #030f13;
+            color: #ece0e0;
+        }
+        .custom-card {
+            width: 500px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <img src="https://storage.googleapis.com/bkt-static-tt/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+            CricketScore Pro : Praveen Sharma
+        </div>
+    </div>
+
+    <div class="container mt-4">
+
+        <h2>Live Matches</h2>
+        <div class="row row-cols-1 row-cols-md-2">
+            {% for match in live_matches %}
+                <div class="col mb-4">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <p><strong>Description:</strong> {{ match['Description'] }}</p>
+                            <p><strong>Teams:</strong> {{ match['Teams'] }}</p>
+                            <p><strong>Status:</strong> {{ match['Status'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No live matches available.</p>
+            {% endfor %}
+        </div>
+
+        <h2>Recent Matches</h2>
+        <div class="row row-cols-1 row-cols-md-2">
+            {% for score in cricket_scores %}
+                <div class="col mb-4">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <p><strong>Description:</strong> {{ score['Description'] }}</p>
+                            <p><strong>Teams:</strong> {{ score['Teams'] }}</p>
+                            <p><strong>Status:</strong> {{ score['Status'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2>Upcoming Matches</h2>
+        <div class="row row-cols-1 row-cols-md-2">
+            {% for match in upcoming_matches %}
+                <div class="col mb-4">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <p><strong>Description:</strong> {{ match['Description'] }}</p>
+                            <p><strong>Teams:</strong> {{ match['Teams'] }}</p>
+                            <p><strong>Status:</strong> {{ match['Status'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No upcoming matches found.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+</body>
+</html>

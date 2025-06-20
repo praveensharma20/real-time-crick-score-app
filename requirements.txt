@@ -1,0 +1,3 @@
+flask  #replace the flask version if required
+tabulate
+requests
